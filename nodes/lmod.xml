@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+    <description>
+        lmod user execution evironment management 
+    </description>
+
+    <copyright>
+        Robert McLay  mclay@tacc.utexas.edu
+    </copyright>
+
+    <changelog>
+        * Initial roll: Jonas Juselius
+    </changelog>
+
+    <package>lua-posix</package>
+    <package>lua-filesystem</package>
+    <package>lmod</package>
+
+    <post>
+
+    ln -s /opt/lmod/lmod/init/profile /etc/profile.d/lmod.sh
+    ln -s /opt/lmod/lmod/init/cshrc /etc/profile.d/lmod.csh
+
+    <file name="/etc/profile.d/z00_StdEnv.sh"><![CDATA[
+if [ -z "$__Init_Default_Modules" -o -z "$LD_LIBRARY_PATH" ]; then
+  __Init_Default_Modules=1; export __Init_Default_Modules;
+    module getdefault default || module load StdEnv
+fi
+    ]]>
+    </file>
+
+    <file name="/etc/profile.d/z00_StdEnv.csh"><![CDATA[
+if ( ! $?__Init_Default_Modules || $?LD_LIBRARY_PATH ) then
+    module getdefault default
+    if ( $status != 0 ) then
+        module load StdEnv
+    endif
+    setenv __Init_Default_Modules 1
+endif
+    ]]>
+    </file>
+    </post>
+    
+</kickstart>
+<!-- 
+vim:et:ts=4:sw=4
+-->

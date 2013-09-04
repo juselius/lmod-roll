@@ -1,0 +1,6 @@
+ROLLNAME	= lmod
+VERSION		= 5.1.5
+RELEASE		= 0
+COLOR		= yellow
+
+REDHAT.ROOT	= $(CURDIR)
