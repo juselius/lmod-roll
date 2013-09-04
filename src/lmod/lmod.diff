@@ -1,0 +1,19 @@
+--- Makefile.in	2013-08-28 21:39:13.000000000 +0200
++++ Makefile.in.new	2013-09-04 18:22:06.765481227 +0200
+@@ -14,7 +14,7 @@
+ VERSION_SRC	  	 := src/Version.lua
+ LUA_INCLUDE       	 := @LUA_INCLUDE@
+ UPDATE_SYSTEM_FN  	 := @UPDATE_SYSTEM_FN@
+-GIT_VERSION              := $(shell git describe --always)
++GIT_VERSION              := unknown
+ prefix		  	 := @prefix@
+ package		  	 := lmod
+ version		  	 := $(shell cd ./src; $(PATH_TO_LUA)/lua -e "V=require('Version'); print(V.tag())")
+@@ -141,6 +141,7 @@
+ 
+ zsh_tab_funcs: $(ZSH_FUNCS)
+ 	-if [ -n "$(ZSH_SITE_FUNCTIONS_DIR)" ]; then \
++          mkdir -p $(DESTDIR)$(ZSH_SITE_FUNCTIONS_DIR);                \
+           cp $^ $(DESTDIR)$(ZSH_SITE_FUNCTIONS_DIR);                \
+         fi
+ 

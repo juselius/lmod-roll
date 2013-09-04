@@ -61,14 +61,14 @@ REDHAT.ROOT = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-
 build:
 	ln -s ../../../Lmod-$(VERSION).$(TARBALL_POSTFIX) lmod-$(VERSION).$(TARBALL_POSTFIX) 
 	bunzip2 -c $(NAME)-$(VERSION).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 							\
 		ln -s Lmod-$(VERSION) lmod-$(VERSION); \
 		cd $(NAME)-$(VERSION);				\
-		sed -i 's/GIT_VERSION *:=.*/GIT_VERSION := 985960/' Makefile.in \
+		[ -f ../../../src/lmod/lmod.diff ] && \
+		  patch -p0 < ../../../src/lmod/lmod.diff; \
 		./configure --prefix=$(PKGROOT);	\
 		$(MAKE);					\
 	)
