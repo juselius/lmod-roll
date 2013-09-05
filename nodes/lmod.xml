@@ -24,6 +24,7 @@
     ln -s /opt/lmod/lmod/init/cshrc /etc/profile.d/lmod.csh
 
     <file name="/etc/profile.d/z00_StdEnv.sh"><![CDATA[
+export LMOD_SYSTEM_DEFAULT_MODULES=""
 if [ -z "$__Init_Default_Modules" -o -z "$LD_LIBRARY_PATH" ]; then
   __Init_Default_Modules=1; export __Init_Default_Modules;
     module getdefault default || module load StdEnv
@@ -32,6 +33,7 @@ fi
     </file>
 
     <file name="/etc/profile.d/z00_StdEnv.csh"><![CDATA[
+setenv LMOD_SYSTEM_DEFAULT_MODULES ""
 if ( ! $?__Init_Default_Modules || $?LD_LIBRARY_PATH ) then
     module getdefault default
     if ( $status != 0 ) then
