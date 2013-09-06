@@ -27,7 +27,7 @@
 export LMOD_SYSTEM_DEFAULT_MODULES=""
 if [ -z "$__Init_Default_Modules" -o -z "$LD_LIBRARY_PATH" ]; then
   __Init_Default_Modules=1; export __Init_Default_Modules;
-    module getdefault default || module load StdEnv
+  module restore 
 fi
     ]]>
     </file>
@@ -35,10 +35,7 @@ fi
     <file name="/etc/profile.d/z00_StdEnv.csh"><![CDATA[
 setenv LMOD_SYSTEM_DEFAULT_MODULES ""
 if ( ! $?__Init_Default_Modules || $?LD_LIBRARY_PATH ) then
-    module getdefault default
-    if ( $status != 0 ) then
-        module load StdEnv
-    endif
+    module restore
     setenv __Init_Default_Modules 1
 endif
     ]]>
