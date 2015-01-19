@@ -69,7 +69,9 @@ build:
 		cd $(NAME)-$(VERSION);				\
 		[ -f ../../../src/lmod/lmod.diff ] && \
 		  patch -p0 < ../../../src/lmod/lmod.diff; \
-		./configure --prefix=$(PKGROOT);	\
+		./configure --prefix=$(PKGROOT) --with-useDotFiles=no \
+			--with-spiderCacheDir=/opt/modulefiles/cache \
+			--with-updateSystemFn=/opt/modulefiles/cache/system.txt;	\
 		$(MAKE);					\
 	)
 	

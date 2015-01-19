@@ -1,5 +1,5 @@
 ROLLNAME	= lmod
-VERSION		= 5.1.5
+VERSION		= 5.8rc2
 RELEASE		= 0
 COLOR		= yellow
 
