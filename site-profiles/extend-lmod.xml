@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<kickstart>
+
+<description>
+   Customize lmod for local envrionment
+</description>
+
+
+<changelog>
+</changelog>
+
+<post>
+
+<![CDATA[
+ln -sf /global/apps/lmodfiles /opt/modulefiles
+
+## Set default module paths
+[ -e /etc/profile.d/lmod.sh ] && rm /etc/profile.d/lmod.sh 
+if [ -f /opt/lmod/lmod/init/profile ]; then
+    cp /opt/lmod/lmod/init/profile /opt/lmod/lmod/init/profile.orig 
+    ln -s /opt/lmod/lmod/init/profile /etc/profile.d/lmod.sh 
+    sed -i '
+/^  *export MODULEPATH_ROOT/a \
+    export LMOD_PACKAGE_PATH=/opt/modulefiles/site-scripts
+/^  *export BASH_ENV/i \
+    export MODULEPATH=$(/opt/lmod/lmod/libexec/addto --append MODULEPATH \\\
+        $MODULEPATH_ROOT/Core \\\
+        $MODULEPATH_ROOT/Applications \\\
+        $MODULEPATH_ROOT/Development \\\
+        $MODULEPATH_ROOT/Libraries)' /opt/lmod/lmod/init/profile
+fi
+
+[ -e /etc/profile.d/lmod.csh ] && rm /etc/profile.d/lmod.csh 
+if [ -f /opt/lmod/lmod/init/cshrc ]; then
+    cp /opt/lmod/lmod/init/cshrc /opt/lmod/lmod/init/cshrc.orig 
+    ln -s /opt/lmod/lmod/init/cshrc /etc/profile.d/lmod.csh 
+    sed -i '
+/^  *setenv MODULEPATH_ROOT/a \
+    setenv LMOD_PACKAGE_PATH /opt/modulefiles/site-scripts
+/^  *setenv BASH_ENV/i \
+    setenv MODULEPATH `/opt/lmod/lmod/libexec/addto --append MODULEPATH \\\
+        $MODULEPATH_ROOT/Core \\\
+        $MODULEPATH_ROOT/Applications \\\
+        $MODULEPATH_ROOT/Development \\\
+        $MODULEPATH_ROOT/Libraries`' /opt/lmod/lmod/init/cshrc
+fi
+
+sed -i 's/\$MAN/$?MAN/' /opt/lmod/lmod/init/cshrc
+
+f=z00_StdEnv.sh
+[ -f /etc/profile.d/$f ] && \
+sed -i 's/export LMOD_SYSTEM_DEFAULT_MODULES=.*/export LMOD_SYSTEM_DEFAULT_MODULES="intel:mkl:openmpi:python:gold"/' /etc/profile.d/$f
+
+f=z00_StdEnv.csh
+[ -f /etc/profile.d/$f ] && \
+sed -i 's/setenv LMOD_SYSTEM_DEFAULT_MODULES .*/setenv LMOD_SYSTEM_DEFAULT_MODULES "intel:mkl:openmpi:python:gold"/' /etc/profile.d/$f
+
+]]>
+
+</post>
+
+</kickstart> 
+
+<!-- 
+vim:et:ts=4:sw=4 
+-->
